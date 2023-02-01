@@ -7,9 +7,15 @@ type ModalInterfaceFun = (arg: {
 }) => JSX.Element;
 
 const ModalPortalInterface: ModalInterfaceFun = ({ isOpen, children }) => {
-  if (!isOpen) return <></>
+  if (!isOpen) return <></>;
 
   return ReactDOM.createPortal(children, document.getElementById("modal")!);
 };
 
 export default ModalPortalInterface;
+
+
+
+
+
+

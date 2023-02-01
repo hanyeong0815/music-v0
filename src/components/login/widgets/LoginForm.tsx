@@ -9,8 +9,16 @@ import React, {
   useState,
 } from "react";
 import {useNavigate} from "react-router-dom";
+import {CommonDivProps} from "@models/common/props";
+import {FunctionComponent as FC} from "react";
 
-const LoginForm = () => {
+interface LoginFormProps extends CommonDivProps{
+  setIsOpen:  React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginForm:FC<LoginFormProps> = (props) => {
+  const {setIsOpen} = props;
+
   let navigate = useNavigate();
   const storageManager = StorageManager;
   const usernameRef = useRef<HTMLInputElement | null>(null);
