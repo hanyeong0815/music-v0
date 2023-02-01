@@ -7,7 +7,7 @@ import PATH from "@utils/routes/PATH";
 import StorageManager from "@utils/common/storage";
 
 const Home = () => {
-  const { LOGIN, SIGNUP, PWCHK } = PATH;
+  const { LOGIN, SIGNUP, PW_CHK } = PATH;
   const { isAuthenticated } = useAuth();
   const [nickname, setNickname] = useState<string | null>(null);
   const [isAuth, setIsAuth] = useState<boolean | null>(false);
@@ -37,7 +37,7 @@ const Home = () => {
       <div className="min-w-full flex flex-row justify-end p-4 gap-4">
         {!isAuth && <Link to={LOGIN} className="underline text-blue-700">로그인</Link>}
         {!isAuth && <Link to={SIGNUP} className="underline text-blue-700">회원가입</Link>}
-        {isAuth && <Link to={PWCHK}>마이페이지</Link>}
+        {isAuth && <Link to={PW_CHK}>마이페이지</Link>}
       </div>
       <main>
         <div className="flex flex-row justify-between px-8">

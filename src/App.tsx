@@ -7,7 +7,7 @@ import SignUp from "@components/signup/SignUp";
 import PwChk from "@components/pwchk/PwChk";
 
 function App() {
-  const { HOME, LOGIN, SIGNUP, PWCHK, MYPAGE } = PATH;
+  const { HOME, LOGIN, SIGNUP, PW_CHK, MYPAGE } = PATH;
 
   return (
     <div className="min-h-screen">
@@ -18,7 +18,7 @@ function App() {
         <Route path={LOGIN} element={<Loginprogress />} />
         <Route path={SIGNUP} element={<SignUp />} />
 
-        <Route path={PWCHK} element={<PwChk />} />
+        <Route path={PW_CHK} element={<PwChk />} />
 
         <Route path="ui" element={<UIPreview />} />
       </Routes>

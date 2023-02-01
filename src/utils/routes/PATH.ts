@@ -2,7 +2,7 @@ const PATH = {
   HOME: "/",
   LOGIN: "/login",
   SIGNUP: "/signup",
-  PWCHK: "/password-check",
+  PW_CHK: "/password-check",
   MYPAGE: "/mypage",
 } as const;
 
