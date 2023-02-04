@@ -1,8 +1,15 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {Gender} from "@models/user/LoginDto";
+import LoginRes, {Gender} from "@models/user/LoginDto";
 import axios from "axios";
+import {FunctionComponent as FC} from "react";
+import useAuth from "@store/auth/useAuth";
 
-const SignUp = () => {
+interface SignUpProps {
+  setIsOpen:  React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SignUp:FC<SignUpProps> = (props) => {
+  const {setIsOpen} =props;
   const nameRef = useRef<HTMLInputElement | null>(null);
   const [indexOfGenderWith, setIndexOfGenderWith] = useState<number>(0);
   const [genderRef, setGenderRef] = useState<Gender>("M");
@@ -14,6 +21,8 @@ const SignUp = () => {
   const backEmailRef = useRef<HTMLSelectElement | null>(null);
 
   const [hasPasswordChk, setHasPasswordChk] = useState<boolean>(false);
+
+  const {setUserInfo} = useAuth();
 
   useEffect(() => {
     setGenderRef(indexOfGenderWith === 0 ? "M" : "F");
@@ -46,11 +55,9 @@ const SignUp = () => {
       roles
     })
         .then((response) => response.data)
-        .then((data: boolean) => {
-            console.log(data);
-          if (data) {
-            location.replace("/login");
-          }
+        .then((loginDto: LoginRes) => {
+          setUserInfo(loginDto)
+          setIsOpen(false)
         })
         .catch((err) => {
           console.error("\n\n\n\n\n\n", err, "\n\n\n\n\n\n\n\n");
@@ -58,86 +65,91 @@ const SignUp = () => {
   }, []);
 
   return (
-    <div className="flex">
+    <div>
       <h1>회원가입</h1>
-      <div>
-        <p>이름</p>
-        <input
-            type="text"
-            ref={nameRef}
-        />
-      </div>
-      <div>
-        <p>성별</p>
-        <label>
-        <input type="radio" name="gender" value="M" onClick={() => {setIndexOfGenderWith(0)}} defaultChecked={indexOfGenderWith === 0} />
-          남
-        </label>
-        <label>
-        <input type="radio" name="gender" value="F" onClick={() => {setIndexOfGenderWith(1)}} defaultChecked={indexOfGenderWith === 1} />
-          여
-        </label>
-      </div>
-      <div>
-        <p>아이디</p>
-        <input
-            type="text"
-            ref={usernameRef}
-            onChange={(evt) => {
-              if (!usernameRef.current) return;
+      <div className="flex flex-col pl-4 pt-4 gap-4">
+        <div>
+          <p>이름</p>
+          <input
+              type="text"
+              ref={nameRef}
+          />
+        </div>
+        <div>
+          <p>성별</p>
+          <label>
+          <input type="radio" name="gender" value="M" onClick={() => {setIndexOfGenderWith(0)}} defaultChecked={indexOfGenderWith === 0} />
+            남
+          </label>
+          <label>
+          <input type="radio" name="gender" value="F" onClick={() => {setIndexOfGenderWith(1)}} defaultChecked={indexOfGenderWith === 1} />
+            여
+          </label>
+        </div>
+        <div>
+          <p>아이디</p>
+          <input
+              type="text"
+              ref={usernameRef}
+              onChange={(evt) => {
+                if (!usernameRef.current) return;
 
-              const idExp = /[^a-z\d0-9]/g;
-              usernameRef.current.value = evt.target.value.replace(idExp, "");
-            }}
-        />
-      </div>
-      <div>
-        <p>비밀번호</p>
-        <input
-            type="password"
-            ref={passwordRef}
-            required={true}
-            onChange={(evt) => {
-              const passwordExp = /[^A-Za-z\d$@$!%*#?&]/g;
-              evt.target.value.replace(passwordExp, "");
-            }}
-        />
-      </div>
-      <div>
-        <p>비밀번호 확인</p>
-        {hasPasswordChk && <p className="text-red-600">비밀번호를 다시 확인해 주세요!!</p>}
-        <input
-            type="password"
-            ref={passwordChkRef}
-        />
-      </div>
-      <div>
-        <p>닉네임</p>
-        <input
-            type="text"
-            ref={nicknameRef}
-            onChange={(evt) => {
-              if (!usernameRef.current) return;
+                const idExp = /[^a-z\d0-9]/g;
+                usernameRef.current.value = evt.target.value.replace(idExp, "");
+              }}
+          />
+        </div>
+        <div>
+          <p>비밀번호</p>
+          <input
+              type="password"
+              ref={passwordRef}
+              required={true}
+              onChange={(evt) => {
+                const passwordExp = /[^A-Za-z\d$@$!%*#?&]/g;
+                evt.target.value.replace(passwordExp, "");
+              }}
+          />
+        </div>
+        <div>
+          <p>비밀번호 확인</p>
+          {hasPasswordChk && <p className="text-red-600">비밀번호를 다시 확인해 주세요!!</p>}
+          <input
+              type="password"
+              ref={passwordChkRef}
+          />
+        </div>
+        <div>
+          <p>닉네임</p>
+          <input
+              type="text"
+              ref={nicknameRef}
+              onChange={(evt) => {
+                if (!nicknameRef.current) return;
 
-              const idExp = /[^A-Za-z\d0-9]/g;
-              usernameRef.current.value = evt.target.value.replace(idExp, "");
-            }}
-        />
+                const idExp = /[^A-Za-z\d0-9]/g;
+                nicknameRef.current.value = evt.target.value.replace(idExp, "");
+              }}
+          />
+        </div>
+        <div>
+          <p>이메일</p>
+          <input
+              type="text"
+              ref={frontEmailRef}
+          /> @
+          <select ref={backEmailRef}>
+            <option value="naver.com">naver.com</option>
+            <option value="google.com">gmail.com</option>
+            <option value="kakao.com">kakao.com</option>
+            <option value="nate.com">nate.com</option>
+          </select>
+        </div>
+        <div className="flex flex-row gap-4">
+          <button onClick={submit}>전송</button>
+          <button onClick={() => {setIsOpen(false)}}>취소</button>
+        </div>
       </div>
-      <div>
-        <p>이메일</p>
-        <input
-            type="text"
-            ref={frontEmailRef}
-        /> @
-        <select ref={backEmailRef}>
-          <option value="naver.com">naver.com</option>
-          <option value="google.com">gmail.com</option>
-          <option value="kakao.com">kakao.com</option>
-          <option value="nate.com">nate.com</option>
-        </select>
-      </div>
-      <button onClick={submit}>전송</button>
     </div>
   );
 };

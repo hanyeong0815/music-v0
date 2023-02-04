@@ -27,7 +27,7 @@ interface AuthState {
   login: (authData: Partial<UserReqRes> | { code: string }) => void;
   logout: (option?: ContextCallbackOption) => void;
 
-  setUserInfo: (userInfo: userInfoReqRes) => void;
+  setUserInfo: (userInfo: LoginRes) => void;
 
   toggleAuthDummy: () => void;
 }
@@ -35,10 +35,10 @@ interface AuthState {
 const useAuth = create<AuthState>((set, get) => ({
   authUser: null,
   isAuthenticated: StorageManager.getItem("username") != null ?? false,
-  loginStatus: "누르기전",
+  loginStatus: StorageManager.getItem("username") != null ? "login_success" : "누르기전",
 
   authInfo: {
-    userName: StorageManager.getItem("username") ?? "",
+    userName: "",
     password: "",
   },
   otp: "",
@@ -139,35 +139,16 @@ const useAuth = create<AuthState>((set, get) => ({
   },
 
   setUserInfo: (userData) => {
-    set(() => ({ loginStatus: "결과 확인" }));
-
-    let loginPromise = null;
-
-    const username = (userData as Partial<userInfoReqRes>).username!;
-    const token = (userData as Partial<userInfoReqRes>).token;
-    const url = `http://localhost:8080/home?username=${username}`;
-
-    if (!username || !token) {
-      console.log("여기여기여기 A");
-      setTimeout(() => set(() => ({ loginStatus: "EMPTY" })), 0);
-      return;
-    }
-
-    loginPromise = axios.get(url, { headers: { Authorization: token } });
-
-    loginPromise
-      .then((response) => response.data)
-      .then((userInfo: userInfoReqRes) => {
-        const { userId, nickname, gender, email } = userInfo;
-        userInfo.userId = userId;
-        userInfo.nickname = nickname;
-        userInfo.gender = gender;
-        userInfo.email = email;
-      })
-      .catch((err) => {
-        console.error("\n\n\n\n\n\n", err, "\n\n\n\n\n\n\n\n");
-        set({ loginStatus: "흠" });
-      });
+    set({
+      loginStatus: "login_success",
+      token: userData.access_token,
+      username: userData.username,
+    });
+    set({ isAuthenticated: true });
+    StorageManager.setItem("isAuth", "true");
+    StorageManager.setItem("userId", `${userData.usr_id ?? "0"}`);
+    StorageManager.setItem("token", `${userData.access_token ?? ""}`);
+    StorageManager.setItem("username", `${userData.username ?? ""}`);
   },
 
   toggleAuthDummy: () => {
