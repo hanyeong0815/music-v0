@@ -12,7 +12,7 @@ import {useNavigate} from "react-router-dom";
 import {CommonDivProps} from "@models/common/props";
 import {FunctionComponent as FC} from "react";
 
-interface LoginFormProps extends CommonDivProps{
+interface LoginFormProps {
   setIsOpen:  React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -44,6 +44,7 @@ const LoginForm:FC<LoginFormProps> = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log("호출됨");
     rememberAuthInfo();
   }, [remembersAuthInfo]);
 
@@ -55,7 +56,7 @@ const LoginForm:FC<LoginFormProps> = (props) => {
       };
 
       login(loginTryingUser);
-      navigate("/");
+      setIsOpen(false);
     },
     []
   );

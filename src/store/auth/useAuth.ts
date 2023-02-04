@@ -34,16 +34,16 @@ interface AuthState {
 
 const useAuth = create<AuthState>((set, get) => ({
   authUser: null,
-  isAuthenticated: false,
+  isAuthenticated: StorageManager.getItem("username") != null ?? false,
   loginStatus: "누르기전",
 
   authInfo: {
-    userName: "",
+    userName: StorageManager.getItem("username") ?? "",
     password: "",
   },
   otp: "",
-  token: "",
-  username: "",
+  token: StorageManager.getItem("token"),
+  username: StorageManager.getItem("username") ?? "",
 
   userInfo: {
     username: "",
@@ -120,10 +120,11 @@ const useAuth = create<AuthState>((set, get) => ({
           token: loginDto.access_token,
           username: loginDto.username,
         });
+        set({ isAuthenticated: true });
+        StorageManager.setItem("isAuth", "true");
         StorageManager.setItem("userId", `${loginDto.usr_id ?? "0"}`);
         StorageManager.setItem("token", `${loginDto.access_token ?? ""}`);
         StorageManager.setItem("username", `${loginDto.username ?? ""}`);
-        set({ isAuthenticated: true });
       })
       .catch((err) => {
         console.error("\n\n\n\n\n\n", err, "\n\n\n\n\n\n\n\n");
