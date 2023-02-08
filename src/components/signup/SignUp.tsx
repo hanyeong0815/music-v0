@@ -5,7 +5,7 @@ import {FunctionComponent as FC} from "react";
 import useAuth from "@store/auth/useAuth";
 
 interface SignUpProps {
-  setIsOpen:  React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SignUp:FC<SignUpProps> = (props) => {
