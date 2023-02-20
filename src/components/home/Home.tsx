@@ -10,6 +10,7 @@ import LoginForm from "@components/login/widgets/LoginForm";
 import SignUp from "@components/signup/SignUp";
 import PwChk from "@components/pwchk/PwChk";
 import Upload from "@components/upload/Upload";
+import UploadPage from "@/page/UploadPage";
 
 const Home = () => {
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
@@ -50,7 +51,7 @@ const Home = () => {
         <PwChk setIsOpen={setIsPwChkOpen}/>
       </Modal>
       <Modal isOpen={isUploadOpen} setIsOpen={setIsUploadOpen}>
-        <Upload setIsOpen={setIsUploadOpen}/>
+        <UploadPage setIsOpen={setIsUploadOpen}/>
       </Modal>
 
       <div className="min-w-full flex flex-row justify-end p-4 gap-4 -z-10">

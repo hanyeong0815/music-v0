@@ -15,7 +15,7 @@ const Modal:FC<ModalProps> = (props) => {
       <div className="min-h-screen min-w-full flex justify-center fixed left-0 top-0">
         <div onClick={()=>{setIsOpen(false)}} className="w-full h-full absolute bg-black opacity-50">
         </div>
-        <div {...restProp} className={`items-center m-24 w-full min-h-full relative overflow-scroll border rounded-md shadow-md p-8 bg-light ${className}`}>
+        <div {...restProp} className={`items-center m-24 w-full min-h-full relative overflow-scroll border rounded-xl shadow-md p-8 bg-light ${className}`}>
           {children}
         </div>
       </div>
