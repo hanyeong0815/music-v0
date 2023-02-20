@@ -9,7 +9,6 @@ import Modal from "@styles/modal";
 import LoginForm from "@components/login/widgets/LoginForm";
 import SignUp from "@components/signup/SignUp";
 import PwChk from "@components/pwchk/PwChk";
-import Upload from "@components/upload/Upload";
 import UploadPage from "@/page/UploadPage";
 
 const Home = () => {

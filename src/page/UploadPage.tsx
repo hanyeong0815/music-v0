@@ -13,12 +13,6 @@ interface UploadPageProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface userDate {
-  userId: number;
-  title: string;
-  lyrics:string;
-}
-
 export interface IFileTypes {
   object: any;
   img: any;
