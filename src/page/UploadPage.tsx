@@ -1,6 +1,6 @@
 import React, {
   FunctionComponent as FC,
-  useCallback, useEffect,
+  useCallback,
   useRef,
   useState,
 } from "react";
@@ -26,13 +26,8 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
 
   const buttonStyle = "px-4 py-2 border-2 rounded-xl";
 
-  useEffect(() => {
-    console.log("files files files files:::::", files);
-  }, [files]);
-
   const submit = useCallback<React.MouseEventHandler<HTMLButtonElement>>(() => {
     const musicFile = files?.object;
-    console.log("accountMusic", files?.object);
     const musicCoverImg = files?.img;
 
     const title = titleRef.current?.value;
@@ -45,15 +40,6 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
     const url = "http://localhost:8080/board/upload";
     const userId = StorageManager.getItem("userId");
     const token = StorageManager.getItem("token");
-
-    console.log(
-      "files",
-      files,
-      "\nmusicFile",
-      musicFile,
-      "\nmusicCoverImg",
-      musicCoverImg
-    );
 
     const userDate = new Blob([JSON.stringify({
       userId: userId,
@@ -74,7 +60,6 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
       .then(({ data }) => data)
       .then((data: boolean) => {
         if (data) {
-          console.log("여기여기여기")
           setIsOpen(false);
         }
       })
@@ -93,8 +78,7 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
         </button>
         <button
           onClick={() => {
-            // setIsOpen(false);
-            console.log(files);
+            setIsOpen(false);
           }}
           className={buttonStyle}
         >

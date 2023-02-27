@@ -12,11 +12,12 @@ const Upload:FC<UploadProps> = (props) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [musicName, setMusicName] = useState<string>("");
   const [imgName, setImgName] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string | ArrayBuffer | null>("");
 
 
   const dragRef = useRef<HTMLLabelElement | null>(null);
 
-  const bgImgStyle = !files?.img ? "bg-gray-400" : `bg-[url('${files.img}')]`;
+  const bgImgStyle = !files?.img ? "bg-gray-400" : `bg-[url('${imgUrl}')]`;
   const fileStyle = `w-full h-[200px] flex flex-col justify-center items-center border-2 border-solid border-black rounded-3xl cursor-pointer ease-in duration-100 opacity-60 ${bgImgStyle}`;
   const dragStyle = `w-full h-[200px] flex flex-col justify-center items-center border-2 border-solid border-black rounded-3xl cursor-pointer ease-in duration-100 bg-gray-600 text-white`;
 
@@ -53,7 +54,6 @@ const Upload:FC<UploadProps> = (props) => {
       }
 
       const file = selectFiles[0];
-      console.log(file.name);
 
       const fileExtension = file.type;
       if (ALLOW_FILE_EXTENSION.includes(fileExtension)) {
@@ -62,21 +62,15 @@ const Upload:FC<UploadProps> = (props) => {
           object: tempFiles?.object!,
           img: file,
         };
-
-        console.log("accountImg", tempFiles!.img);
-        console.log("tempFiles", tempFiles);
+        imgChangeHandler(file);
       } else {
         setMusicName(file.name);
         tempFiles = {
           object: file!,
           img: files?.img!,
         };
-
-        console.log("accountMusic", tempFiles.object);
-        console.log("tempFiles", tempFiles);
       }
       setFiles(tempFiles);
-      console.log("files", files);
     },
     [files]
   );
@@ -122,8 +116,16 @@ const Upload:FC<UploadProps> = (props) => {
   const handleFilterFile = useCallback((): void => {
     // 매개변수로 받은 id와 일치하지 않는지에 따라서 filter 해줍니다.
     setFiles(null);
-    console.log("files", files);
   }, [files]);
+
+  const imgChangeHandler = (file: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImgUrl(reader.result);
+      console.log(imgUrl);
+    };
+  };
 
   return (
     <div>
