@@ -1,19 +1,25 @@
-import React, {ChangeEvent, FunctionComponent as FC, useCallback, useEffect, useRef, useState} from "react";
-import {IFileTypes} from "@/page/UploadPage";
+import React, {
+  ChangeEvent,
+  FunctionComponent as FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { IFileTypes } from "@/page/UploadPage";
 
 interface UploadProps {
   files: IFileTypes | null;
-  setFiles:  React.Dispatch<React.SetStateAction<IFileTypes | null>>;
+  setFiles: React.Dispatch<React.SetStateAction<IFileTypes | null>>;
 }
 
-const Upload:FC<UploadProps> = (props) => {
+const Upload: FC<UploadProps> = (props) => {
   const { files, setFiles } = props;
   const ALLOW_FILE_EXTENSION = ["image/jpg", "image/jpeg", "image/png"];
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [musicName, setMusicName] = useState<string>("");
   const [imgName, setImgName] = useState<string>("");
   const [imgUrl, setImgUrl] = useState<string | ArrayBuffer | null>("");
-
 
   const dragRef = useRef<HTMLLabelElement | null>(null);
 
@@ -87,7 +93,6 @@ const Upload:FC<UploadProps> = (props) => {
   );
 
   const initDragEvents = useCallback((): void => {
-
     if (dragRef.current === null) {
       return;
     }
@@ -138,27 +143,34 @@ const Upload:FC<UploadProps> = (props) => {
           onChange={onChangeFiles}
           accept="image/gif, image/jpeg, image/png, audio/*"
         />
-        <label htmlFor="fileUpload"
-               ref={dragRef}
-               className={isDragging ? dragStyle : fileStyle}
+        <label
+          htmlFor="fileUpload"
+          ref={dragRef}
+          className={isDragging ? dragStyle : fileStyle}
         >
           <div className="m-4">
-            {files?.object || files?.img ?
-                <div className="flex flex-row gap-4">
-                  <div className="flex flex-col">
-                    {musicName !== "" && <div>{musicName}</div>}
-                    {imgName !== "" && <div>{imgName}</div>}
-                  </div>
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => handleFilterFile()}
-                  >
-                    X
-                  </div>
-                </div> : <div>클릭 혹은 파일을 드래그 해주세요.</div>}
+            {files?.object || files?.img ? (
+              <div className="flex flex-row gap-4">
+                <div className="flex flex-col">
+                  {musicName !== "" && <div>{musicName}</div>}
+                  {imgName !== "" && <div>{imgName}</div>}
+                </div>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => handleFilterFile()}
+                >
+                  X
+                </div>
+              </div>
+            ) : (
+              <div>클릭 혹은 파일을 드래그 해주세요.</div>
+            )}
           </div>
         </label>
-        <div className="text-red-600">노래 파일은 필수로 등록해야 합니다. 노래파일 등록 후 이미지 파일을 등록해 주세요.</div>
+        <div className="text-red-600">
+          노래 파일은 필수로 등록해야 합니다. 노래파일 등록 후 이미지 파일을
+          등록해 주세요.
+        </div>
       </div>
     </div>
   );

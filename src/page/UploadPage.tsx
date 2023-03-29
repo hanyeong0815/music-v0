@@ -19,7 +19,10 @@ export interface IFileTypes {
 }
 
 const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
-  const [files, setFiles] = useState<IFileTypes | null>({object: null, img: null});
+  const [files, setFiles] = useState<IFileTypes | null>({
+    object: null,
+    img: null,
+  });
 
   const titleRef = useRef<HTMLInputElement | null>(null);
   const lyricsRef = useRef<HTMLTextAreaElement | null>(null);
@@ -41,20 +44,28 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
     const userId = StorageManager.getItem("userId");
     const token = StorageManager.getItem("token");
 
-    const userDate = new Blob([JSON.stringify({
-      userId: userId,
-      title: title,
-      lyrics: lyrics,
-    })], {
-      type: 'application/json'
-    });
+    const userDate = new Blob(
+      [
+        JSON.stringify({
+          userId: userId,
+          title: title,
+          lyrics: lyrics,
+        }),
+      ],
+      {
+        type: "application/json",
+      }
+    );
 
     axios
       .post(
         url,
-        { data:userDate, music: musicFile, cover: musicCoverImg },
+        { data: userDate, music: musicFile, cover: musicCoverImg },
         {
-          headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token!}` },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token!}`,
+          },
         }
       )
       .then(({ data }) => data)
