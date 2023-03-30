@@ -108,12 +108,12 @@ const Home = () => {
           </Link>
         )}
       </div>
-      <main>
+      <main className="flex flex-col gap-8">
         <div className="flex flex-row justify-between px-8">
           <h1 className="font-bold text-6xl">Main Page </h1>
           {isAuth && <p className="text-xl pt-4">어서오세요 {nickname}님</p>}
         </div>
-        <div className="flex flex-row">
+        <div className="grid grid-rows-1 grid-cols-5 p-6 gap-6">
           {boardList?.boardList.map((item, index) => {
             return (
               <div className="flex flex-col" key={item.id}>
