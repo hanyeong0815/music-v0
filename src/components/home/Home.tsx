@@ -19,7 +19,7 @@ const Home = () => {
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
-  const [pageMap, setPageMap] = useState<number>(1);
+  const [pageMap, setPageMap] = useState<number[]>([]);
   const [boardList, SetBoardList] = useState<boardListInfo>();
   const { username, token, isAuthenticated } = useAuth();
   const [nickname, setNickname] = useState<string | null>(
@@ -54,7 +54,7 @@ const Home = () => {
       .then(({ data }) => data)
       .then((boardListInfo: boardListInfo) => {
         SetBoardList(boardListInfo);
-        setTotalPage(boardListInfo.totalPage);
+        setPageMap(new Array(boardListInfo.totalPage).fill(0));
       })
       .catch(console.error);
   }, [boardList]);
@@ -116,7 +116,7 @@ const Home = () => {
         <div className="flex flex-row">
           {boardList?.boardList.map((item, index) => {
             return (
-              <div className="flex flex-col">
+              <div className="flex flex-col" key={item.id}>
                 <div>
                   <img src={item.imgUrl} alt="music cover image" />
                 </div>
@@ -129,9 +129,19 @@ const Home = () => {
           })}
         </div>
         <div className="flex flex-row gap-4 justify-center">
-          {Array.from(Array(totalPage), (x) => (
-            <p>{pageMap}</p>
-          ))}
+        {pageMap.map((item, index) => (
+          <button
+            key={index + 1}
+            onClick={() => setPage(index + 1)}
+            className={
+              index + 1 === page
+                ? "font-bold"
+                : ""
+            }
+          >
+            {index + 1}
+          </button>
+        ))}
         </div>
         <section>
           <article>
