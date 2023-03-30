@@ -19,8 +19,7 @@ const Home = () => {
   const [isPwChkOpen, setIsPwChkOpen] = useState<boolean>(false);
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(0);
-  const [pageMap, setPageMap] = useState<number[]>([]);
+  const [totalPage, setTotalPage] = useState<number[]>([]);
   const [boardList, SetBoardList] = useState<boardListInfo>();
   const { username, token, isAuthenticated } = useAuth();
   const [nickname, setNickname] = useState<string | null>(
@@ -55,7 +54,7 @@ const Home = () => {
       .then(({ data }) => data)
       .then((boardListInfo: boardListInfo) => {
         SetBoardList(boardListInfo);
-        setPageMap(new Array(boardListInfo.totalPage).fill(0));
+        setTotalPage(new Array(boardListInfo.totalPage).fill(0));
       })
       .catch(console.error);
   }, [boardList]);
@@ -134,7 +133,7 @@ const Home = () => {
           })}
         </div>
         <div className="flex flex-row gap-4 justify-center">
-          {pageMap.map((item, index) => (
+          {totalPage.map((item, index) => (
             <button
               key={index + 1}
               onClick={() => setPage(index + 1)}
