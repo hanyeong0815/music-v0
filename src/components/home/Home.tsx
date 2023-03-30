@@ -11,6 +11,7 @@ import SignUp from "@components/signup/SignUp";
 import PwChk from "@components/pwchk/PwChk";
 import UploadPage from "@/page/UploadPage";
 import boardListInfo from "@models/auth/dto/BoardListInfo";
+import playIcon from "/src/play.svg";
 
 const Home = () => {
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
@@ -118,7 +119,7 @@ const Home = () => {
             return (
               <div className="flex flex-col" key={item.id}>
                 <div>
-                  <img src={item.imgUrl} alt="music cover image" />
+                  <img src={item.imgUrl ?? playIcon} alt="music cover image" />
                 </div>
                 <div className="flex flex-col">
                   <p className="font-bold text-lg">{item.title}</p>
