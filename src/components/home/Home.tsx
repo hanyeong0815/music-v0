@@ -114,12 +114,16 @@ const Home = () => {
           <h1 className="font-bold text-6xl">Main Page </h1>
           {isAuth && <p className="text-xl pt-4">어서오세요 {nickname}님</p>}
         </div>
-        <div className="grid grid-rows-1 grid-cols-5 p-6 gap-6">
+        <div className="grid grid-rows-1 grid-cols-5 p-8 gap-8">
           {boardList?.boardList.map((item, index) => {
             return (
               <div className="flex flex-col" key={item.id}>
-                <div>
-                  <img src={item.imgUrl ?? playIcon} alt="music cover image" />
+                <div className="w-full aspect-square">
+                  <img
+                    src={item.imgUrl ?? playIcon}
+                    alt="music cover image"
+                    className="w-full aspect-square"
+                  />
                 </div>
                 <div className="flex flex-col">
                   <p className="font-bold text-lg">{item.title}</p>
@@ -130,19 +134,15 @@ const Home = () => {
           })}
         </div>
         <div className="flex flex-row gap-4 justify-center">
-        {pageMap.map((item, index) => (
-          <button
-            key={index + 1}
-            onClick={() => setPage(index + 1)}
-            className={
-              index + 1 === page
-                ? "font-bold"
-                : ""
-            }
-          >
-            {index + 1}
-          </button>
-        ))}
+          {pageMap.map((item, index) => (
+            <button
+              key={index + 1}
+              onClick={() => setPage(index + 1)}
+              className={index + 1 === page ? "font-bold" : ""}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
         <section>
           <article>
