@@ -1,6 +1,5 @@
 import authInfo from "@models/auth/dto/AuthInfo";
 import ContextCallbackOption from "@models/auth/dto/common/api/ContextCallbackOption";
-import getOTPPromiseDummy from "@data/auth/otpPromiseDummy";
 import StorageManager from "@utils/common/storage";
 import create from "zustand";
 import UserReqRes from "@models/user/UserReqRes";
@@ -23,7 +22,6 @@ interface AuthState {
   setAuthInfo: (authInfo: authInfo) => void;
   setOTP: (otp: string) => void;
 
-  sendOTPRequest: (option?: ContextCallbackOption) => void;
   login: (authData: Partial<UserReqRes> | { code: string }) => void;
   logout: (option?: ContextCallbackOption) => void;
 
@@ -35,7 +33,8 @@ interface AuthState {
 const useAuth = create<AuthState>((set, get) => ({
   authUser: null,
   isAuthenticated: StorageManager.getItem("username") != null ?? false,
-  loginStatus: StorageManager.getItem("username") != null ? "login_success" : "누르기전",
+  loginStatus:
+    StorageManager.getItem("username") != null ? "login_success" : "누르기전",
 
   authInfo: {
     userName: "",
@@ -56,17 +55,6 @@ const useAuth = create<AuthState>((set, get) => ({
 
   setAuthInfo: (authInfo) => set({ authInfo }),
   setOTP: (otp) => set({ otp }),
-
-  sendOTPRequest: (option) => {
-    const state = get();
-    const otpPromise = getOTPPromiseDummy(state.authInfo.userName);
-
-    otpPromise
-      .then(({ data }) => data)
-      .then(() => {
-        option?.success && option.success();
-      });
-  },
 
   login: (authData) => {
     set(() => ({ loginStatus: "결과 확인" }));
@@ -134,7 +122,7 @@ const useAuth = create<AuthState>((set, get) => ({
 
   logout: (option) => {
     StorageManager.clearAllUnsticky();
-    set({ isAuthenticated: false });
+    set({ isAuthenticated: false, token: null, username: null });
     option?.success && option.success(true);
   },
 

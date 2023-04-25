@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import LoginRes, {Gender} from "@models/user/LoginDto";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import LoginRes, { Gender } from "@models/user/LoginDto";
 import axios from "axios";
-import {FunctionComponent as FC} from "react";
+import { FunctionComponent as FC } from "react";
 import useAuth from "@store/auth/useAuth";
 
 interface SignUpProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignUp:FC<SignUpProps> = (props) => {
-  const {setIsOpen} =props;
+const SignUp: FC<SignUpProps> = (props) => {
+  const { setIsOpen } = props;
   const nameRef = useRef<HTMLInputElement | null>(null);
   const [indexOfGenderWith, setIndexOfGenderWith] = useState<number>(0);
   const [genderRef, setGenderRef] = useState<Gender>("M");
@@ -22,12 +22,11 @@ const SignUp:FC<SignUpProps> = (props) => {
 
   const [hasPasswordChk, setHasPasswordChk] = useState<boolean>(false);
 
-  const {setUserInfo} = useAuth();
+  const { setUserInfo } = useAuth();
 
   useEffect(() => {
     setGenderRef(indexOfGenderWith === 0 ? "M" : "F");
   }, [indexOfGenderWith]);
-
 
   const submit = useCallback<React.MouseEventHandler<HTMLButtonElement>>(() => {
     const url = "http://localhost:8080/signup";
@@ -45,23 +44,24 @@ const SignUp:FC<SignUpProps> = (props) => {
       return;
     }
 
-    axios.post(url, {
-      name,
-      gender,
-      userName,
-      password,
-      nickname,
-      email,
-      roles
-    })
-        .then((response) => response.data)
-        .then((loginDto: LoginRes) => {
-          setUserInfo(loginDto)
-          setIsOpen(false)
-        })
-        .catch((err) => {
-          console.error("\n\n\n\n\n\n", err, "\n\n\n\n\n\n\n\n");
-        });
+    axios
+      .post(url, {
+        name,
+        gender,
+        userName,
+        password,
+        nickname,
+        email,
+        roles,
+      })
+      .then((response) => response.data)
+      .then((loginDto: LoginRes) => {
+        setUserInfo(loginDto);
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        console.error("\n\n\n\n\n\n", err, "\n\n\n\n\n\n\n\n");
+      });
   }, []);
 
   return (
@@ -70,74 +70,83 @@ const SignUp:FC<SignUpProps> = (props) => {
       <div className="flex flex-col pl-4 pt-4 gap-4">
         <div>
           <p>이름</p>
-          <input
-              type="text"
-              ref={nameRef}
-          />
+          <input type="text" ref={nameRef} />
         </div>
         <div>
           <p>성별</p>
           <label>
-          <input type="radio" name="gender" value="M" onClick={() => {setIndexOfGenderWith(0)}} defaultChecked={indexOfGenderWith === 0} />
+            <input
+              type="radio"
+              name="gender"
+              value="M"
+              onClick={() => {
+                setIndexOfGenderWith(0);
+              }}
+              defaultChecked={indexOfGenderWith === 0}
+            />
             남
           </label>
           <label>
-          <input type="radio" name="gender" value="F" onClick={() => {setIndexOfGenderWith(1)}} defaultChecked={indexOfGenderWith === 1} />
+            <input
+              type="radio"
+              name="gender"
+              value="F"
+              onClick={() => {
+                setIndexOfGenderWith(1);
+              }}
+              defaultChecked={indexOfGenderWith === 1}
+            />
             여
           </label>
         </div>
         <div>
           <p>아이디</p>
           <input
-              type="text"
-              ref={usernameRef}
-              onChange={(evt) => {
-                if (!usernameRef.current) return;
+            type="text"
+            ref={usernameRef}
+            onChange={(evt) => {
+              if (!usernameRef.current) return;
 
-                const idExp = /[^a-z\d0-9]/g;
-                usernameRef.current.value = evt.target.value.replace(idExp, "");
-              }}
+              const idExp = /[^a-z\d0-9]/g;
+              usernameRef.current.value = evt.target.value.replace(idExp, "");
+            }}
           />
         </div>
         <div>
           <p>비밀번호</p>
           <input
-              type="password"
-              ref={passwordRef}
-              required={true}
-              onChange={(evt) => {
-                const passwordExp = /[^A-Za-z\d$@$!%*#?&]/g;
-                evt.target.value.replace(passwordExp, "");
-              }}
+            type="password"
+            ref={passwordRef}
+            required={true}
+            onChange={(evt) => {
+              const passwordExp = /[^A-Za-z\d$@$!%*#?&]/g;
+              evt.target.value.replace(passwordExp, "");
+            }}
           />
         </div>
         <div>
           <p>비밀번호 확인</p>
-          {hasPasswordChk && <p className="text-red-600">비밀번호를 다시 확인해 주세요!!</p>}
-          <input
-              type="password"
-              ref={passwordChkRef}
-          />
+          {hasPasswordChk && (
+            <p className="text-red-600">비밀번호를 다시 확인해 주세요!!</p>
+          )}
+          <input type="password" ref={passwordChkRef} />
         </div>
         <div>
           <p>닉네임</p>
           <input
-              type="text"
-              ref={nicknameRef}
-              onChange={(evt) => {
-                if (!nicknameRef.current) return;
+            type="text"
+            ref={nicknameRef}
+            onChange={(evt) => {
+              if (!nicknameRef.current) return;
 
-                const idExp = /[^A-Za-z\d0-9]/g;
-                nicknameRef.current.value = evt.target.value.replace(idExp, "");
-              }}
+              const idExp = /[^가-힣A-Za-z\d0-9]/g;
+              nicknameRef.current.value = evt.target.value.replace(idExp, "");
+            }}
           />
         </div>
         <div>
           <p>이메일</p>
-          <input
-              type="text"
-              ref={frontEmailRef}
-          /> @
+          <input type="text" ref={frontEmailRef} /> @
           <select ref={backEmailRef}>
             <option value="naver.com">naver.com</option>
             <option value="google.com">gmail.com</option>
@@ -147,7 +156,13 @@ const SignUp:FC<SignUpProps> = (props) => {
         </div>
         <div className="flex flex-row gap-4">
           <button onClick={submit}>전송</button>
-          <button onClick={() => {setIsOpen(false)}}>취소</button>
+          <button
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            취소
+          </button>
         </div>
       </div>
     </div>

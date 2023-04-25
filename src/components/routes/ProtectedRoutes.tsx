@@ -1,5 +1,5 @@
 import UIPreview from "@components/example/layout/UIPreview";
-import Home from "@components/home/Home";
+import Home from "@/page/Home";
 import PATH from "@utils/routes/PATH";
 import { Navigate, Route, Routes } from "react-router-dom";
 

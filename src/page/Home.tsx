@@ -1,7 +1,7 @@
 import userInfoReqRes from "@models/auth/dto/UserInfoReqRes";
 import useAuth from "@store/auth/useAuth";
 import axios from "axios";
-import { useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StorageManager from "@utils/common/storage";
 import MainButton from "@styles/button";
@@ -11,17 +11,28 @@ import SignUp from "@components/signup/SignUp";
 import PwChk from "@components/pwchk/PwChk";
 import UploadPage from "@/page/UploadPage";
 import boardListInfo from "@models/auth/dto/BoardListInfo";
-import playIcon from "/src/play.svg";
+import usePlay from "@store/player/usePlay";
+import HomeHead from "../components/home/widgets/HomeHead";
+import musicPlayRes from "@models/player/dto/MusicPlayRes";
+import Player from "@components/player";
+import PageNavigation from "../components/home/widgets/PageNavigation";
+import BoardList from "../components/home/widgets/BoardList";
 
 const Home = () => {
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
   const [isSignupOpen, setIsSignupOpen] = useState<boolean>(false);
   const [isPwChkOpen, setIsPwChkOpen] = useState<boolean>(false);
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [song, setSong] = useState<musicPlayRes>();
   const [page, setPage] = useState<number>(1);
+<<<<<<< HEAD:src/components/home/Home.tsx
   const [totalPage, setTotalPage] = useState<number[]>([]);
+=======
+  const [pageMap, setPageMap] = useState<number[]>([]);
+>>>>>>> 4140f6c (feat(player): 음악재생 기능 완성):src/page/Home.tsx
   const [boardList, SetBoardList] = useState<boardListInfo>();
-  const { username, token, isAuthenticated } = useAuth();
+  const { username, token, isAuthenticated, logout } = useAuth();
   const [nickname, setNickname] = useState<string | null>(
     StorageManager.getItem("nickname") ?? null
   );
@@ -45,6 +56,8 @@ const Home = () => {
         setNickname(userInfo.nickname);
       })
       .catch(console.error);
+
+    console.log(isAuthenticated);
   }, [isAuthenticated]);
 
   useLayoutEffect(() => {
@@ -74,45 +87,28 @@ const Home = () => {
         <UploadPage setIsOpen={setIsUploadOpen} />
       </Modal>
 
-      <div className="min-w-full flex flex-row justify-end p-4 gap-4 -z-10">
-        {!isAuth && (
-          <Link
-            to="#"
-            onClick={() => {
-              setIsLoginOpen(true);
-            }}
-            className="underline text-blue-700"
-          >
-            로그인
-          </Link>
-        )}
-        {!isAuth && (
-          <Link
-            to="#"
-            onClick={() => {
-              setIsSignupOpen(true);
-            }}
-            className="underline text-blue-700"
-          >
-            회원가입
-          </Link>
-        )}
-        {isAuth && (
-          <Link
-            to="#"
-            onClick={() => {
-              setIsPwChkOpen(true);
-            }}
-          >
-            마이페이지
-          </Link>
-        )}
-      </div>
+      <Player
+        isAuth={isAuth}
+        song={song}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+      />
+
+      <HomeHead
+        isAuth={isAuth}
+        isAuthenticated={isAuthenticated}
+        setIsAuth={setIsAuth}
+        setIsLoginOpen={setIsLoginOpen}
+        setIsSignupOpen={setIsSignupOpen}
+        setIsPwChkOpen={setIsPwChkOpen}
+        logout={logout}
+      />
       <main className="flex flex-col gap-8">
         <div className="flex flex-row justify-between px-8">
           <h1 className="font-bold text-6xl">Main Page </h1>
           {isAuth && <p className="text-xl pt-4">어서오세요 {nickname}님</p>}
         </div>
+<<<<<<< HEAD:src/components/home/Home.tsx
         <div className="grid grid-rows-1 grid-cols-5 p-8 gap-8">
           {boardList?.boardList.map((item, index) => {
             return (
@@ -143,6 +139,16 @@ const Home = () => {
             </button>
           ))}
         </div>
+=======
+        <BoardList
+          boardList={boardList}
+          isPlaying={isPlaying}
+          song={song}
+          setSong={setSong}
+          setIsPlaying={setIsPlaying}
+        />
+        <PageNavigation pageMap={pageMap} page={page} setPage={setPage} />
+>>>>>>> 4140f6c (feat(player): 음악재생 기능 완성):src/page/Home.tsx
         <section>
           <article>
             <MainButton

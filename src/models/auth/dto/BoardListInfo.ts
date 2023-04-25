@@ -9,9 +9,7 @@ interface board {
   userId: number;
   userName: string;
   title: string;
-  lyrics: string;
   uploadDate: string;
   uploadIp: string;
   imgUrl: string;
-  musicUrl: string;
 }
