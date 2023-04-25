@@ -26,11 +26,7 @@ const Home = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [song, setSong] = useState<musicPlayRes>();
   const [page, setPage] = useState<number>(1);
-<<<<<<< HEAD:src/components/home/Home.tsx
-  const [totalPage, setTotalPage] = useState<number[]>([]);
-=======
   const [pageMap, setPageMap] = useState<number[]>([]);
->>>>>>> 4140f6c (feat(player): 음악재생 기능 완성):src/page/Home.tsx
   const [boardList, SetBoardList] = useState<boardListInfo>();
   const { username, token, isAuthenticated, logout } = useAuth();
   const [nickname, setNickname] = useState<string | null>(
@@ -67,7 +63,7 @@ const Home = () => {
       .then(({ data }) => data)
       .then((boardListInfo: boardListInfo) => {
         SetBoardList(boardListInfo);
-        setTotalPage(new Array(boardListInfo.totalPage).fill(0));
+        setPageMap(new Array(boardListInfo.totalPage).fill(0));
       })
       .catch(console.error);
   }, [boardList]);
@@ -108,38 +104,6 @@ const Home = () => {
           <h1 className="font-bold text-6xl">Main Page </h1>
           {isAuth && <p className="text-xl pt-4">어서오세요 {nickname}님</p>}
         </div>
-<<<<<<< HEAD:src/components/home/Home.tsx
-        <div className="grid grid-rows-1 grid-cols-5 p-8 gap-8">
-          {boardList?.boardList.map((item, index) => {
-            return (
-              <div className="flex flex-col" key={item.id}>
-                <div className="w-full aspect-square">
-                  <img
-                    src={item.imgUrl ?? playIcon}
-                    alt="music cover image"
-                    className="w-full aspect-square"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="font-bold text-lg">{item.title}</p>
-                  <p className="text-gray-400 text-sm">{item.uploadDate}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="flex flex-row gap-4 justify-center">
-          {totalPage.map((item, index) => (
-            <button
-              key={index + 1}
-              onClick={() => setPage(index + 1)}
-              className={index + 1 === page ? "font-bold" : ""}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-=======
         <BoardList
           boardList={boardList}
           isPlaying={isPlaying}
@@ -148,7 +112,6 @@ const Home = () => {
           setIsPlaying={setIsPlaying}
         />
         <PageNavigation pageMap={pageMap} page={page} setPage={setPage} />
->>>>>>> 4140f6c (feat(player): 음악재생 기능 완성):src/page/Home.tsx
         <section>
           <article>
             <MainButton

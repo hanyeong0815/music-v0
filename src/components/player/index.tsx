@@ -7,13 +7,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import {
-  BsFillPauseFill,
-  BsFillPlayFill,
-  BsFillSkipBackwardFill,
-  BsFillSkipForwardFill,
-} from "react-icons/bs";
 import PlayBar from "./widgets/PlayBar";
+import PlayerController from "./widgets/PlayerController";
 
 interface PlayerProps extends CommonDivProps {
   isAuth: boolean | null;
@@ -77,30 +72,13 @@ const Player: FC<PlayerProps> = ({ isAuth, song, isPlaying, setIsPlaying }) => {
             onTimeUpdate={onplaying}
           />
         )}
-        <div className="flex flex-row justify-center items-center gap-4 h-full">
-          <BsFillSkipBackwardFill className="text-4xl" />
-          {isPlaying ? (
-            <BsFillPauseFill
-              onClick={() => {
-                setIsPlaying(!isPlaying);
-              }}
-              className="text-4xl"
-            />
-          ) : (
-            <BsFillPlayFill
-              onClick={() => {
-                if (progress >= 100) {
-                  playerRef.current!.currentTime = 0;
-                }
-                if (song != undefined) {
-                  setIsPlaying(!isPlaying);
-                }
-              }}
-              className="text-4xl"
-            />
-          )}
-          <BsFillSkipForwardFill className="text-4xl" />
-        </div>
+        <PlayerController
+          isPlaying={isPlaying}
+          playerRef={playerRef}
+          progress={progress}
+          setIsPlaying={setIsPlaying}
+          song={song}
+        />
         <div className="h-full text-center items-center text-2xl text-gray-600">
           <p>{song?.title ?? "재생할 음악이 없습니다!!"}</p>
         </div>
