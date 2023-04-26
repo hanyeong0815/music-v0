@@ -48,7 +48,7 @@ const BoardList: FC<BoardListProps> = ({
   );
 
   return (
-    <div className="grid grid-rows-1 grid-cols-5 p-8 gap-8">
+    <div className="grid grid-rows-1 grid-cols-5 px-8 gap-8 h-1/2">
       {boardList?.boardList.map((item, index) => {
         return (
           <div className="flex flex-col" key={item.id}>

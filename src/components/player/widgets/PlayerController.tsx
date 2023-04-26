@@ -1,5 +1,10 @@
 import musicPlayRes from "@models/player/dto/MusicPlayRes";
-import React, { FunctionComponent as FC, useState } from "react";
+import React, {
+  FunctionComponent as FC,
+  KeyboardEvent,
+  useEffect,
+  useState,
+} from "react";
 import {
   BsFillPauseFill,
   BsFillPlayFill,
@@ -27,7 +32,6 @@ const PlayerController: FC<PlayerControllerProps> = ({
     playerRef.current?.volume ?? 0.5
   );
   const [isOnMouse, setIsOnMouse] = useState<boolean>(false);
-
   const handleVolume = (e: number) => {
     setStateVolume(e);
     if (song == null) {
@@ -60,26 +64,22 @@ const PlayerController: FC<PlayerControllerProps> = ({
       </div>
       <div className="flex flex-row justify-center items-center gap-4 h-full">
         <BsFillSkipBackwardFill className="text-4xl" />
-        {isPlaying ? (
-          <BsFillPauseFill
-            onClick={() => {
+        <button
+          onClick={() => {
+            if (progress >= 100) {
+              playerRef.current!.currentTime = 0;
+            }
+            if (song != undefined) {
               setIsPlaying(!isPlaying);
-            }}
-            className="text-4xl"
-          />
-        ) : (
-          <BsFillPlayFill
-            onClick={() => {
-              if (progress >= 100) {
-                playerRef.current!.currentTime = 0;
-              }
-              if (song != undefined) {
-                setIsPlaying(!isPlaying);
-              }
-            }}
-            className="text-4xl"
-          />
-        )}
+            }
+          }}
+        >
+          {isPlaying ? (
+            <BsFillPauseFill className="text-4xl" />
+          ) : (
+            <BsFillPlayFill className="text-4xl" />
+          )}
+        </button>
         <BsFillSkipForwardFill className="text-4xl" />
       </div>
     </div>
