@@ -64,7 +64,7 @@ const Player: FC<PlayerProps> = ({ isAuth, song, isPlaying, setIsPlaying }) => {
 
   return (
     <div>
-      <div className="grid grid-cols-3 p-3 h-20 bg-gray-300">
+      <div className="grid grid-cols-3 p-3 h-20 bg-gray-300 select-none">
         {song != null && (
           <audio
             src={song?.musicUrl}
