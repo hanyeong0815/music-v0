@@ -83,7 +83,7 @@ const Player: FC<PlayerProps> = ({ isAuth, song, isPlaying, setIsPlaying }) => {
           <p>{song?.title ?? "재생할 음악이 없습니다!!"}</p>
         </div>
         <div className="h-full overflow-scroll text-center items-center text-xl text-gray-600 py-2">
-          {song?.lyrics}
+          {song?.lyrics ?? "등록된 가사가 없습니다"}
         </div>
       </div>
       <PlayBar
