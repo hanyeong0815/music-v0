@@ -6,6 +6,7 @@ import UserReqRes from "@models/user/UserReqRes";
 import axios from "axios";
 import LoginRes from "@models/user/LoginDto";
 import userInfoReqRes from "@models/auth/dto/UserInfoReqRes";
+import Cookiemanager from "@utils/common/storage/Cookie";
 
 interface AuthState {
   authUser: UserReqRes | null | undefined;
@@ -41,7 +42,7 @@ const useAuth = create<AuthState>((set, get) => ({
     password: "",
   },
   otp: "",
-  token: StorageManager.getItem("token"),
+  token: Cookiemanager.getCookie("accessToken"),
   username: StorageManager.getItem("username") ?? "",
 
   userInfo: {
@@ -111,7 +112,14 @@ const useAuth = create<AuthState>((set, get) => ({
         set({ isAuthenticated: true });
         StorageManager.setItem("isAuth", "true");
         StorageManager.setItem("userId", `${loginDto.usr_id ?? "0"}`);
-        StorageManager.setItem("token", `${loginDto.access_token ?? ""}`);
+        Cookiemanager.setCookie(
+          "accessToken",
+          `${loginDto.access_token ?? ""}`
+        );
+        Cookiemanager.setCookie(
+          "refreshToken",
+          `${loginDto.refresh_token ?? ""}`
+        );
         StorageManager.setItem("username", `${loginDto.username ?? ""}`);
       })
       .catch((err) => {
@@ -122,6 +130,8 @@ const useAuth = create<AuthState>((set, get) => ({
 
   logout: (option) => {
     StorageManager.clearAllUnsticky();
+    Cookiemanager.removeCookie("accessToken");
+    Cookiemanager.removeCookie("refreshToken");
     set({ isAuthenticated: false, token: null, username: null });
     option?.success && option.success(true);
   },

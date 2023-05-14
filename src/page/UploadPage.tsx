@@ -8,6 +8,7 @@ import Upload from "@components/upload/Upload";
 import axios from "axios";
 import StorageManager from "@utils/common/storage";
 import Board from "@components/upload/Board";
+import Cookiemanager from "@utils/common/storage/Cookie";
 
 interface UploadPageProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +24,7 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
     object: null,
     img: null,
   });
+  const [isMusicErr, setIsMusicErr] = useState<boolean>(false);
 
   const titleRef = useRef<HTMLInputElement | null>(null);
   const lyricsRef = useRef<HTMLTextAreaElement | null>(null);
@@ -38,11 +40,12 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
 
     if (musicFile === null || title === null) {
       console.log("설마 여기?");
+      setIsMusicErr(true);
       return;
     }
     const url = "http://localhost:8080/board/upload";
     const userId = StorageManager.getItem("userId");
-    const token = StorageManager.getItem("token");
+    const token = Cookiemanager.getCookie("accessToken");
 
     const userDate = new Blob(
       [
@@ -81,7 +84,12 @@ const UploadPage: FC<UploadPageProps> = ({ setIsOpen }) => {
 
   return (
     <div className="w-full h-full flex flex-col gap-1 justify-items-start items-center">
-      <Upload files={files} setFiles={setFiles} />
+      <Upload
+        files={files}
+        setFiles={setFiles}
+        isMusicErr={isMusicErr}
+        setIsMusicErr={setIsMusicErr}
+      />
       <Board titleRef={titleRef} lyricsRef={lyricsRef} />
       <div className="flex flex-row gap-4">
         <button onClick={submit} className={buttonStyle}>

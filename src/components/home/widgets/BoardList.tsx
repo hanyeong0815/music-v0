@@ -67,17 +67,20 @@ const BoardList: FC<BoardListProps> = ({
               className="w-full aspect-square relative"
             >
               {isHover === item.id && (
-                <div className="flex flex-col justify-center items-center gap-8 bg-black absolute opacity-50 w-full h-full">
-                  <button className={buttonStyle}>곡 정보</button>
-                  <button
-                    onClick={() => {
-                      musicPlay(item.id);
-                      console.log(item);
-                    }}
-                    className={buttonStyle}
-                  >
-                    재생
-                  </button>
+                <div className=" w-full h-full absolute">
+                  <div className=" absolute opacity-50 w-full h-full bg-black"></div>
+                  <div className="absolute flex flex-col justify-center items-center gap-8 w-full h-full">
+                    <button className={buttonStyle}>곡 정보</button>
+                    <button
+                      onClick={() => {
+                        musicPlay(item.id);
+                        console.log(item);
+                      }}
+                      className={buttonStyle}
+                    >
+                      재생
+                    </button>
+                  </div>
                 </div>
               )}
               <img

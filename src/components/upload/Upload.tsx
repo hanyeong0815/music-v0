@@ -10,11 +10,13 @@ import { IFileTypes } from "@/page/UploadPage";
 
 interface UploadProps {
   files: IFileTypes | null;
+  isMusicErr: boolean;
   setFiles: React.Dispatch<React.SetStateAction<IFileTypes | null>>;
+  setIsMusicErr: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Upload: FC<UploadProps> = (props) => {
-  const { files, setFiles } = props;
+  const { files, isMusicErr, setFiles, setIsMusicErr } = props;
   const ALLOW_FILE_EXTENSION = ["image/jpg", "image/jpeg", "image/png"];
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [musicName, setMusicName] = useState<string>("");
@@ -25,6 +27,7 @@ const Upload: FC<UploadProps> = (props) => {
 
   const bgImgStyle = !files?.img ? "bg-gray-400" : `bg-[url('${imgUrl}')]`;
   const fileStyle = `w-full h-[200px] flex flex-col justify-center items-center border-2 border-solid border-black rounded-3xl cursor-pointer ease-in duration-100 opacity-60 ${bgImgStyle}`;
+  const musicErrStyle = `w-full h-[200px] flex flex-col justify-center items-center border-2 border-solid border-red-800 rounded-3xl cursor-pointer ease-in duration-100 opacity-60 bg-red-600 font-bold`;
   const dragStyle = `w-full h-[200px] flex flex-col justify-center items-center border-2 border-solid border-black rounded-3xl cursor-pointer ease-in duration-100 bg-gray-600 text-white`;
 
   const handleDragIn = useCallback((e: DragEvent): void => {
@@ -58,6 +61,8 @@ const Upload: FC<UploadProps> = (props) => {
       } else {
         selectFiles = e.target.files;
       }
+
+      setIsMusicErr(false);
 
       const file = selectFiles[0];
 
@@ -146,7 +151,9 @@ const Upload: FC<UploadProps> = (props) => {
         <label
           htmlFor="fileUpload"
           ref={dragRef}
-          className={isDragging ? dragStyle : fileStyle}
+          className={
+            isDragging ? dragStyle : isMusicErr ? musicErrStyle : fileStyle
+          }
         >
           <div className="m-4">
             {files?.object || files?.img ? (

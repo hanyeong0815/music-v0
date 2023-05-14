@@ -6,7 +6,7 @@ export default interface LoginRes {
   username: string | null | undefined;
   access_token: string | null | undefined;
   refresh_token: string | null | undefined;
-  expired_in: number | null | undefined;
-  refresh_expired_in: number | null | undefined;
+  expired_in: string | null | undefined;
+  refresh_expired_in: string | null | undefined;
   token_type: string | null | undefined;
 }
