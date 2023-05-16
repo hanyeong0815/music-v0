@@ -38,7 +38,7 @@ const SignUp: FC<SignUpProps> = (props) => {
     const passwordChk = passwordChkRef.current?.value;
     const nickname = nicknameRef.current?.value;
     const email = `${frontEmailRef.current?.value}@${backEmailRef.current?.value}`;
-    const roles = ["USER"];
+    const roles = ["ROLE_USER"];
     if (password !== passwordChk) {
       setHasPasswordChk(true);
       return;

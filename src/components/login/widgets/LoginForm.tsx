@@ -18,8 +18,9 @@ const LoginForm: FC<LoginFormProps> = (props) => {
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
 
+  const [isLogin, setIsLogin] = useState<boolean>(false);
   const [remembersAuthInfo, setRemembersAuthInfo] = useState<boolean>(
     JSON.parse(storageManager.getItem("remembersUserName") ?? "false")
   );
@@ -64,8 +65,12 @@ const LoginForm: FC<LoginFormProps> = (props) => {
   }, []);
 
   return (
-    <article>
-      <form onSubmit={submit}>
+    <article className="w-full h-full flex flex-col p-4 gap-8">
+      <h1 className="font-bold text-xl">로그인</h1>
+      <form
+        onSubmit={submit}
+        className="w-full j-full flex flex-col gap-4 justify-center items-center"
+      >
         <input
           name="id"
           ref={usernameRef}
@@ -76,6 +81,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
             usernameRef.current.value = evt.target.value.replace(idExp, "");
           }}
           type="text"
+          className="p-2 border"
         />
         <input
           name="password"
@@ -87,9 +93,21 @@ const LoginForm: FC<LoginFormProps> = (props) => {
             evt.target.value.replace(passwordExp, "");
           }}
           type="password"
+          className="p-2 border"
         />
-        <button>login</button>
-        <NonSubmitButton>CANCEL</NonSubmitButton>
+        {isLogin && (
+          <div className="text-red-600">
+            아이디 혹은 비밀번호를 다시 확인하여주세요.
+          </div>
+        )}
+        <div className="flex flex-row justify-center">
+          <button className="px-4 py-2 bg-yellow-400 border-2 border-gray-700 rounded-l-xl">
+            login
+          </button>
+          <NonSubmitButton className="px-2 py-2 bg-gray-400 border-2 border-gray-700 rounded-r-xl">
+            CANCEL
+          </NonSubmitButton>
+        </div>
       </form>
     </article>
   );

@@ -130,8 +130,6 @@ const useAuth = create<AuthState>((set, get) => ({
 
   logout: (option) => {
     StorageManager.clearAllUnsticky();
-    Cookiemanager.removeCookie("accessToken");
-    Cookiemanager.removeCookie("refreshToken");
     set({ isAuthenticated: false, token: null, username: null });
     option?.success && option.success(true);
   },
